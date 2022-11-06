@@ -1,0 +1,109 @@
+create database programmer1000      //انشاء قاعدة البيانات
+////////////////////////
+create table roles(              //(جدول المهن(الأدوار
+Id int primary key,
+roleName nvarchar(50) not null
+)
+/////////////////////////
+create table users(              //جدول المستخدمين
+Id int primary key identity(1,1),
+userName nvarchar(50) not null,
+email nvarchar(50) not null unique,
+passwoord int unique check(passwoord >=8)
+)
+create table categories(             //جدول الفئات
+Id int primary key identity(1,1),
+catName nvarchar(50) not null
+)
+//////////////////
+create table trainingDays(              //جدول أيام التدريب
+Id int primary key identity(1,1),
+dayName nvarchar(50) not null check(dayName not in ('thursday','friday')),
+trainingHour int unique,
+exerciseid int,
+foreign key (exerciseid) references exercises(id)
+)
+/////////////////////////////
+create table trainingStyle(                    //جدول نمط التدريب
+Id int primary key identity(1,1),
+styleName nvarchar(50) not null check(styleName in ('physical','online')),
+exerciseid int,
+foreign key (exerciseid) references exercises(Id)
+)
+/////////////////////
+create table halls(                //جدول القاعات التدريبية
+Id int primary key identity(1,1),
+hallName nvarchar(50) not null,
+trainingstyleid int,
+foreign key (trainingstyleid) references trainingstyle(Id)
+)
+////////////////////////
+create table univercity(                  //جدول الجامعات
+Id int primary key identity(1,1),
+univercityName nvarchar(50) not null,
+)
+///////////////////////
+create table colleges(                 //جدول الكليات
+Id int primary key identity(1,1),
+collegName nvarchar(50) not null
+)
+//////////////////////
+create table univercitycolleges(           //جدول كليات الجامعات
+Id int primary key identity(1,1),
+univercollName nvarchar(50) not null check(univercollName in ('College of Informatics, University of Idlib','Faculty of Informatics, Al-Sham','UniversityFaculty of Informatics, University of Aleppo')),
+univercityid int,
+collegid int,
+foreign key (univercityid) references univercity(Id),
+foreign key (collegid) references colleges(Id)
+)
+///////////////////////
+create table employment(                     //حدول التوظيف
+Id int primary key identity(1,1),
+firstName nvarchar(50) not null,
+lastName nvarchar(50) not null,
+companyName nvarchar(50) not null,
+startDate datetime not null,
+)
+///////////
+create table experiences(                   //جدول الخبرات
+Id int primary key identity(1,1),
+expName nvarchar(50) not null,
+expcount int check(expcount > = 2 ),
+employmentid int,
+foreign key (employmentid)references employment(Id)
+)
+////////////////////////
+create table completeTrainings(                 //جدول اكمال التدريب
+Id int primary key identity(1,1),
+firstName nvarchar(50) not null,
+lastName nvarchar(50) not null,
+isCompleted nvarchar(50) not null check(isCompleted in ('true','false')),
+experiencid int,
+exercisid int,
+foreign key (experiencid) references experiences(Id),
+foreign key (exercisid) references exercises(Id)
+)
+////////////////////////
+create table students(                 //جدول الطلاب        
+Id int primary key identity(1,1),
+firstName nvarchar(50) not null,
+lastName nvarchar(50) not null,
+userid int,
+categoryid int,
+completeTrainingid int,
+univercitycollegid int,
+foreign key (userid) references users(Id),
+foreign key (categoryid) references categories(Id),
+foreign key (completeTrainingid) references completeTrainings(Id)
+foreign key (univercitycollegid) references univercitycolleges(Id)
+)
+ممكن استاذ يكون في شوية نقص لأني كنت نسيان موضوع التعليمات وأكيد ممكن يكون في اخطاء بالعلاقات بس لأنه أول مرة وان شاء الله مع التدريب بتحسن								
+
+
+
+
+
+
+
+
+
